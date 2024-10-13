@@ -32,19 +32,25 @@ class PostResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->label('Image')
                     ->defaultImageUrl(url('/images/article.jpg')),
                 Tables\Columns\TextColumn::make('title')
+                    ->label('Title')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('slug')
+                    ->label('Slug')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('published_date')
+                    ->label('Publish Date')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label('Created Date')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label('Uploaded Date')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
