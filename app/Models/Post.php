@@ -35,6 +35,7 @@ class Post extends Model
                 ->label('Title')
                 ->required()
                 ->maxLength(255)
+                ->autocomplete('off')
                 ->afterStateUpdated(function ($operation, $state, $set) {
                     return $operation === 'create' ? $set('slug', Str::slug($state)) : null;
                 }),
