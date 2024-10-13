@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('title');
             $table->string('slug')->unique()->nullable();
             $table->text('content');
-            $table->string('author');
             $table->date('published_date')->nullable();
 
             $table->text('image')->nullable();
