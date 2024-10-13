@@ -6,7 +6,9 @@ use App\Enums\PostStatusEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,6 +61,23 @@ class Post extends Model
             DatePicker::make('published_date')
                 ->label('Publish Date')
                 ->date(),
+            Select::make('status')
+                ->options(PostStatusEnum::class)
+                ->required()
+                ->label('Status'),
+
+            Select::make('authors')
+                ->relationship('authors', 'name')
+                ->createOptionForm(Author::getForm())
+                ->multiple()
+                ->label('Authors'),
+
+            Select::make('categories')
+                ->relationship('categories', 'name')
+                ->createOptionForm(Category::getForm())
+                ->multiple()
+                ->label('Categories'),
+
             FileUpload::make('image')
                 ->label('Image')
                 ->image()

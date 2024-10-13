@@ -14,4 +14,11 @@ class Author extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public static function getForm(): array
+    {
+
+        return [];
+
+    }
 }
