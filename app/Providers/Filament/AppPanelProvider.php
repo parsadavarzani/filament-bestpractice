@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -31,6 +32,14 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->colors([
                 'primary' => Color::Red,
+            ])
+            ->navigationGroups([
+                NavigationGroup::make('Hospital')
+                    ->icon('heroicon-o-users'),
+                NavigationGroup::make('Blog')
+                    ->icon('hero-o-document'),
+                NavigationGroup::make('Product')
+                    ->icon('heroicon-o-shopping-cart')
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
