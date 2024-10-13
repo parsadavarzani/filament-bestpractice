@@ -53,7 +53,7 @@ class Post extends Model
                 ->label('Slug')
                 ->unique(Post::class, 'slug', ignoreRecord: true)
                 ->maxLength(255)
-                ->disabled(),
+                ->readOnly(),
             RichEditor::make('content')
                 ->label('Content')
                 ->required()
