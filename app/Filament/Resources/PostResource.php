@@ -24,30 +24,7 @@ class PostResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->label('Title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
-                    ->label('Slug')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\RichEditor::make('content')
-                    ->label('Content')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\DatePicker::make('published_date')
-                    ->label('Publish Date')
-                    ->date(),
-                Forms\Components\FileUpload::make('image')
-                    ->label('Image')
-                    ->image()
-                    ->imageEditor()
-                    ->directory('post')
-                    ->maxSize(2040)
-                    ->columnSpanFull(),
-            ]);
+            ->schema(Post::getForm());
     }
 
     public static function table(Table $table): Table
