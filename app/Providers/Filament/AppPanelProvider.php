@@ -37,7 +37,7 @@ class AppPanelProvider extends PanelProvider
                 NavigationGroup::make('Hospital')
                     ->icon('heroicon-o-users'),
                 NavigationGroup::make('Blog')
-                    ->icon('hero-o-document'),
+                    ->icon('heroicon-o-document'),
                 NavigationGroup::make('Product')
                     ->icon('heroicon-o-shopping-cart')
             ])
