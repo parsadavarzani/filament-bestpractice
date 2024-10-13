@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PostStatusEnum;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
@@ -17,6 +18,13 @@ use Illuminate\Support\Str;
 class Post extends Model
 {
     use HasFactory;
+
+    protected function casts(): array
+    {
+        return [
+            'status' => PostStatusEnum::class
+        ];
+    }
 
     public function categories(): MorphToMany
     {
