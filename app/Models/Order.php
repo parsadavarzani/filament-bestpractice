@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Enums\OrderStatusEnum;
+use App\Filament\Resources\ProductResource;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -35,7 +37,7 @@ class Order extends Model
             Wizard::make([
                 Wizard\Step::make('Order Detail')
                     ->schema([
-                      TextInput::make('number')
+                        TextInput::make('number')
                             ->default('OR-' . random_int(100000, 999999))
                             ->readOnly()
                             ->dehydrated()
@@ -43,25 +45,26 @@ class Order extends Model
                             ->maxLength(32)
                             ->unique(Order::class, 'number', ignoreRecord: true),
 
-                      Select::make('customer_id')
+                        Select::make('customer_id')
                             ->relationship('customer', 'name')
                             ->searchable()
+                            ->preload()
                             ->required()
                             ->createOptionForm(Customer::getForm()),
 
-                      ToggleButtons::make('status')
+                        ToggleButtons::make('status')
                             ->inline()
                             ->options(OrderStatusEnum::class)
                             ->required(),
 
-                      MarkdownEditor::make('notes')
+                        MarkdownEditor::make('notes')
                             ->columnSpan('full'),
                     ]),
                 Wizard\Step::make('Order Items')
                     ->schema([
                         Repeater::make('items')
                             ->schema([
-                              Select::make('product_id')
+                                Select::make('product_id')
                                     ->label('Product')
                                     ->options(Product::query()->pluck('name', 'id'))
                                     ->required()
@@ -74,7 +77,7 @@ class Order extends Model
                                     ])
                                     ->searchable(),
 
-                              TextInput::make('qty')
+                                TextInput::make('qty')
                                     ->label('Quantity')
                                     ->numeric()
                                     ->default(1)
@@ -83,7 +86,7 @@ class Order extends Model
                                     ])
                                     ->required(),
 
-                              TextInput::make('unit_price')
+                                TextInput::make('unit_price')
                                     ->label('Unit Price')
                                     ->disabled()
                                     ->dehydrated()
@@ -93,23 +96,23 @@ class Order extends Model
                                         'md' => 3,
                                     ]),
                             ])
-//                                ->extraItemActions([
-//                                    Action::make('openProduct')
-//                                        ->tooltip('Open product')
-//                                        ->icon('heroicon-m-arrow-top-right-on-square')
-//                                        ->url(function (array $arguments, Repeater $component): ?string {
-//                                            $itemData = $component->getRawItemState($arguments['item']);
-//
-//                                            $product = Product::find($itemData['shop_product_id']);
-//
-//                                            if (!$product) {
-//                                                return null;
-//                                            }
-//
-//                                            return ProductResource::getUrl('edit', ['record' => $product]);
-//                                        }, shouldOpenInNewTab: true)
-//                                        ->hidden(fn(array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['shop_product_id'])),
-//                                ])
+                            ->extraItemActions([
+                                Action::make('openProduct')
+                                    ->tooltip('Open product')
+                                    ->icon('heroicon-m-arrow-top-right-on-square')
+                                    ->url(function (array $arguments, Repeater $component): ?string {
+                                        $itemData = $component->getRawItemState($arguments['item']);
+
+                                        $product = Product::find($itemData['product_id']);
+
+                                        if (!$product) {
+                                            return null;
+                                        }
+
+                                        return ProductResource::getUrl('edit', ['record' => $product]);
+                                    }, shouldOpenInNewTab: true)
+                                    ->hidden(fn(array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
+                            ])
                             ->orderColumn('sort')
                             ->defaultItems(1)
                             ->hiddenLabel()
