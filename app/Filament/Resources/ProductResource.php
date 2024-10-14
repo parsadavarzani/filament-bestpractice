@@ -37,7 +37,8 @@ class ProductResource extends Resource
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
-                    ->collection('product-images'),
+                    ->collection('product-images')
+                    ->defaultImageUrl(url('/images/new-product.jpg')),
                 Tables\Columns\TextColumn::make('name')
                     ->label('Name')
                     ->searchable(),

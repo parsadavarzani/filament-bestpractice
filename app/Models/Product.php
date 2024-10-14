@@ -43,7 +43,7 @@ class Product extends Model implements HasMedia
                             TextInput::make('name')
                                 ->label('Name')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->maxLength(255)
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function ($operation, $state, Set $set) {
@@ -66,6 +66,7 @@ class Product extends Model implements HasMedia
                                 ->imageEditor()
                                 ->hiddenLabel()
                                 ->directory('product')
+                                ->multiple()
                         ])
                         ->collapsible(),
                     Section::make('Pricing')
@@ -74,19 +75,19 @@ class Product extends Model implements HasMedia
                             TextInput::make('price')
                                 ->label('Price')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->numeric()
                                 ->prefix('$'),
                             TextInput::make('old_price')
                                 ->label('Compare At Price')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->numeric(),
                             TextInput::make('cost')
                                 ->label('Cost Per Item')
                                 ->required()
                                 ->numeric()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->prefix('$')
                                 ->helperText('Customers Won\'t See This Price'),
                         ]),
@@ -98,7 +99,7 @@ class Product extends Model implements HasMedia
                             TextInput::make('sku')
                                 ->label('SKU (Stock Keeping Unit)')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->maxLength(255)
                                 ->default(null),
                             TextInput::make('barcode')
@@ -109,13 +110,13 @@ class Product extends Model implements HasMedia
                             TextInput::make('qty')
                                 ->label('Quantity')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->numeric()
                                 ->default(0),
                             TextInput::make('security_stock')
                                 ->label('Security Stock')
                                 ->required()
-                                ->autocomplete(true)
+                                ->autocomplete(false)
                                 ->numeric()
                                 ->default(0)
                                 ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock. '),
