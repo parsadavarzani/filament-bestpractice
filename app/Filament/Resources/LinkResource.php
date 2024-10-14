@@ -52,6 +52,7 @@ class LinkResource extends Resource
                         Tables\Columns\ColorColumn::make('color')
                             ->grow(false),
                         Tables\Columns\TextColumn::make('description')
+                            ->html()
                             ->color('gray'),
                     ]),
                 ])->collapsible(),
