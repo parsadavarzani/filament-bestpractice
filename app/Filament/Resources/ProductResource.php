@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
+use App\Filament\Resources\ProductResource\Widgets\ProductStatsWidget;
 use App\Models\Product;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -16,6 +17,16 @@ class ProductResource extends Resource
     // protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $navigationGroup = 'Product';
+
+    public static function getNavigationBadge(): ?string
+    {
+        return Product::count();
+    }
+
+    public static function getNavigationBadgeColor(): string|array|null
+    {
+        return 'danger';
+    }
 
     public static function form(Form $form): Form
     {
@@ -65,6 +76,13 @@ class ProductResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public static function getWidgets(): array
+    {
+        return [
+            ProductStatsWidget::class,
+        ];
     }
 
     public static function getRelations(): array
