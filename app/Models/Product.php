@@ -20,7 +20,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory , InteractsWithMedia;
+    use HasFactory, InteractsWithMedia;
 
     public function categories()
     {
@@ -65,6 +65,7 @@ class Product extends Model implements HasMedia
                                 ->image()
                                 ->imageEditor()
                                 ->hiddenLabel()
+                                ->directory('product')
                         ])
                         ->collapsible(),
                     Section::make('Pricing')
