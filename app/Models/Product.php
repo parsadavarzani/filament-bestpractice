@@ -15,10 +15,12 @@ use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Product extends Model
+class Product extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory , InteractsWithMedia;
 
     public function categories()
     {
@@ -41,6 +43,7 @@ class Product extends Model
                             TextInput::make('name')
                                 ->label('Name')
                                 ->required()
+                                ->autocomplete(true)
                                 ->maxLength(255)
                                 ->live(onBlur: true)
                                 ->afterStateUpdated(function ($operation, $state, Set $set) {
@@ -70,16 +73,19 @@ class Product extends Model
                             TextInput::make('price')
                                 ->label('Price')
                                 ->required()
+                                ->autocomplete(true)
                                 ->numeric()
                                 ->prefix('$'),
                             TextInput::make('old_price')
                                 ->label('Compare At Price')
                                 ->required()
+                                ->autocomplete(true)
                                 ->numeric(),
                             TextInput::make('cost')
                                 ->label('Cost Per Item')
                                 ->required()
                                 ->numeric()
+                                ->autocomplete(true)
                                 ->prefix('$')
                                 ->helperText('Customers Won\'t See This Price'),
                         ]),
@@ -91,6 +97,7 @@ class Product extends Model
                             TextInput::make('sku')
                                 ->label('SKU (Stock Keeping Unit)')
                                 ->required()
+                                ->autocomplete(true)
                                 ->maxLength(255)
                                 ->default(null),
                             TextInput::make('barcode')
@@ -101,11 +108,13 @@ class Product extends Model
                             TextInput::make('qty')
                                 ->label('Quantity')
                                 ->required()
+                                ->autocomplete(true)
                                 ->numeric()
                                 ->default(0),
                             TextInput::make('security_stock')
                                 ->label('Security Stock')
                                 ->required()
+                                ->autocomplete(true)
                                 ->numeric()
                                 ->default(0)
                                 ->helperText('The safety stock is the limit stock for your products which alerts you if the product stock will soon be out of stock. '),
@@ -127,16 +136,17 @@ class Product extends Model
                     Section::make('Status')
                         ->columns(2)
                         ->schema([
-                            Toggle::make('is_visible')
-                                ->label('Visibility')
-                                ->default(true)
-                                ->helperText('This Product Will Be Hidden From All Sales Channels.'),
-
                             DatePicker::make('published_at')
                                 ->date()
                                 ->label('Availability')
                                 ->default(now())
+                                ->columnSpanFull()
                                 ->required(),
+                            Toggle::make('is_visible')
+                                ->label('Visibility')
+                                ->default(true)
+                                ->columnSpanFull()
+                                ->helperText('This Product Will Be Hidden From All Sales Channels.'),
                         ]),
 
                     Section::make('Associations')
@@ -147,6 +157,7 @@ class Product extends Model
                                 ->relationship('brand', 'name')
                                 ->searchable()
                                 ->preload()
+                                ->columnSpanFull()
                                 ->createOptionForm(Brand::getForm()),
 
                             Select::make('categories')
@@ -155,6 +166,7 @@ class Product extends Model
                                 ->multiple()
                                 ->searchable()
                                 ->preload()
+                                ->columnSpanFull()
                                 ->createOptionForm(Category::getForm()),
                         ]),
                 ])
