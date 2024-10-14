@@ -66,6 +66,10 @@ class Product extends Model implements HasMedia
                                 ->imageEditor()
                                 ->hiddenLabel()
                                 ->directory('product')
+                                ->disk('public')
+                                ->visibility('public')
+                                ->maxFiles(5)
+                                ->collection('product-images')
                                 ->multiple()
                         ])
                         ->collapsible(),
