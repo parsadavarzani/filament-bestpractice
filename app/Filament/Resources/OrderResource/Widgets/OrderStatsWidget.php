@@ -11,7 +11,22 @@ class OrderStatsWidget extends BaseWidget
     protected function getStats(): array
     {
 
-        $orders = Order::count();
+        $orderStat = $this->orderStat();
+
+        return [
+            Stat::make('Orders', $orderStat['orderCount'])
+                ->chart([$orderStat['previousMonthOrderCount'], $orderStat['currentMonthOrderCount']])
+                ->color($orderStat['color'])
+                ->description($orderStat['description'])
+                ->descriptionIcon($orderStat['descriptionIcon']),
+            Stat::make('Open Orders', Order::where('status', 'open')->count()),
+            Stat::make('Average Price', Order::avg('total_price')),
+        ];
+    }
+
+    protected function orderStat(): array
+    {
+        $orderCount = Order::count();
 
         $currentMonth = Order::where('created_at', now()->month)->count();
         $previousMonth = Order::where('created_at', now()->subMonth()->month)->count();
@@ -34,15 +49,13 @@ class OrderStatsWidget extends BaseWidget
             ? 'heroicon-m-arrow-trending-down'
             : 'heroicon-m-arrow-trending-up';
 
-
         return [
-            Stat::make('Orders', $orders)
-                ->chart([$previousMonth, $currentMonth])
-                ->color($color)
-                ->description($description)
-                ->descriptionIcon($descriptionIcon),
-            Stat::make('Open Orders', Order::where('status', 'open')->count()),
-            Stat::make('Average Price', Order::avg('total_price')),
+            'orderCount' => $orderCount,
+            'currentMonthOrderCount' => $currentMonth,
+            'previousMonthOrderCount' => $previousMonth,
+            'color' => $color,
+            'description' => $description,
+            'descriptionIcon' => $descriptionIcon
         ];
     }
 }
