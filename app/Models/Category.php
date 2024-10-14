@@ -32,7 +32,7 @@ class Category extends Model
 
             Toggle::make('is_visible')
                 ->required()
-                ->label('Visibility')
+                ->label('Visibility'),
         ];
     }
 }

@@ -4,10 +4,10 @@ namespace App\Enums;
 
 enum PostStatusEnum: string
 {
-    case pending = "Pending";
-    case published = "Published";
+    case pending = 'Pending';
+    case published = 'Published';
 
-    case rejected = "Rejected";
+    case rejected = 'Rejected';
 
     public function getColor(): string
     {

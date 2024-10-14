@@ -39,7 +39,7 @@ class AppPanelProvider extends PanelProvider
                 NavigationGroup::make('Blog')
                     ->icon('heroicon-o-document'),
                 NavigationGroup::make('Product')
-                    ->icon('heroicon-o-shopping-cart')
+                    ->icon('heroicon-o-shopping-cart'),
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')

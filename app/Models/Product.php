@@ -20,7 +20,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Product extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    use InteractsWithMedia;
 
     public function categories()
     {
@@ -70,7 +71,7 @@ class Product extends Model implements HasMedia
                                 ->visibility('public')
                                 ->maxFiles(5)
                                 ->collection('product-images')
-                                ->multiple()
+                                ->multiple(),
                         ])
                         ->collapsible(),
                     Section::make('Pricing')
@@ -95,7 +96,6 @@ class Product extends Model implements HasMedia
                                 ->prefix('$')
                                 ->helperText('Customers Won\'t See This Price'),
                         ]),
-
 
                     Section::make('Inventory')
                         ->columns(2)

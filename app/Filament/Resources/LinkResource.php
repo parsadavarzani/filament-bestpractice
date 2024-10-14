@@ -3,17 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\LinkResource\Pages;
-use App\Filament\Resources\LinkResource\RelationManagers;
 use App\Models\Link;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Str;
 
 class LinkResource extends Resource
 {
@@ -42,7 +37,7 @@ class LinkResource extends Resource
                         Tables\Columns\TextColumn::make('title')
                             ->weight(FontWeight::Bold),
                         Tables\Columns\TextColumn::make('url')
-                            ->formatStateUsing(fn(string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
+                            ->formatStateUsing(fn (string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
                             ->color('gray')
                             ->limit(30),
                     ]),
@@ -76,7 +71,7 @@ class LinkResource extends Resource
                     ->color('gray')
                     ->icon('heroicon-m-arrow-top-right-on-square')
                     ->url(function (Link $record) {
-                        return "#" . urlencode($record->url);
+                        return '#' . urlencode($record->url);
                     }),
                 Tables\Actions\EditAction::make()->color('info'),
             ])
