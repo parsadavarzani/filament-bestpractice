@@ -37,7 +37,7 @@ class LinkResource extends Resource
                         Tables\Columns\TextColumn::make('title')
                             ->weight(FontWeight::Bold),
                         Tables\Columns\TextColumn::make('url')
-                            ->formatStateUsing(fn (string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
+                            ->formatStateUsing(fn(string $state): string => str($state)->after('://')->ltrim('www.')->trim('/'))
                             ->color('gray')
                             ->limit(30),
                     ]),

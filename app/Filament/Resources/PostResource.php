@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\PostStatusEnum;
 use App\Filament\Resources\PostResource\Pages;
 use App\Models\Post;
 use Filament\Forms\Form;
@@ -58,7 +59,13 @@ class PostResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->attribute('status')
+                    ->options(PostStatusEnum::class),
+
+                Tables\Filters\SelectFilter::make('author')
+                    ->relationship('authors', 'name')
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -5,10 +5,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\Widgets\ProductStatsWidget;
 use App\Models\Product;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ProductResource extends Resource
 {
@@ -38,6 +40,8 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+           // ->persistFiltersInSession()
+           // ->filtersLayout(Tables\Enums\FiltersLayout::AboveContent)
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
@@ -66,7 +70,46 @@ class ProductResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-                //
+//                Tables\Filters\Filter::make('is_visible')
+//                    ->label('Visibility')
+//                    ->query(function (Builder $query) {
+//                        return $query->where('is_visible', 1);
+//                    }),
+                Tables\Filters\Filter::make('is_visible')
+                    ->label('Visibility')
+                    ->toggle()
+                    ->query(function (Builder $query) {
+                        return $query->where('is_visible', 1);
+                    }),
+                Tables\Filters\TernaryFilter::make('is_visible')
+                    ->label('Visibility')
+                    ->indicator('Administrators')
+                    ->attribute('is_visible')
+                    ->placeholder('You can see with products are visible and witch are not')
+                    ->trueLabel('do you want to see visible products ?')
+                    ->falseLabel('do you want to see invisible products ?'),
+//                    ->queries(
+//                        true: fn (Builder $query) => $query->withTrashed(),
+//                        false: fn (Builder $query) => $query->onlyTrashed(),
+//                        blank: fn (Builder $query) => $query->withoutTrashed(),
+//                    )
+
+                Tables\Filters\Filter::make('created_at')
+                    ->form([
+                        DatePicker::make('created_from'),
+                        DatePicker::make('created_until')->default(now()),
+
+                    ])->query(function (Builder $query, array $data) {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    })
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->color('info'),
