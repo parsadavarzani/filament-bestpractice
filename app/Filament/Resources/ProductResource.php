@@ -9,6 +9,10 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -110,7 +114,22 @@ class ProductResource extends Resource
                                 $data['created_until'],
                                 fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
-                    })
+                    }),
+
+//                Tables\Filters\QueryBuilder::make()
+//                    ->constraints([
+//                        Tables\Filters\QueryBuilder\Constraints\TextConstraint::make('name'),
+//                        Tables\Filters\QueryBuilder\Constraints\BooleanConstraint::make('is_visible'),
+//                        DateConstraint::make('created_at'),
+//                        RelationshipConstraint::make('categories')
+//                            ->multiple()
+//                            ->selectable(
+//                                IsRelatedToOperator::make()
+//                                    ->titleAttribute('name')
+//                                    ->searchable()
+//                                    ->multiple(),
+//                            ),
+//                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->color('info'),
