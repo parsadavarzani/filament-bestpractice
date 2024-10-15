@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 
 class ProductResource extends Resource
 {
@@ -40,8 +41,8 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-           // ->persistFiltersInSession()
-           // ->filtersLayout(Tables\Enums\FiltersLayout::AboveContent)
+            // ->persistFiltersInSession()
+            // ->filtersLayout(Tables\Enums\FiltersLayout::AboveContent)
             ->columns([
                 Tables\Columns\SpatieMediaLibraryImageColumn::make('product-image')
                     ->label('Image')
@@ -113,11 +114,54 @@ class ProductResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->color('info'),
+
+//                Tables\Actions\ReplicateAction::make()->excludeAttributes(['slug'])
+//                    ->beforeReplicaSaved(function (Model $replica, array $data): void {
+//                        $replica->fill($data);
+//                    }),
+
+                Tables\Actions\Action::make('visibility')
+                    ->label('Visibility')
+                    //->icon()
+                    ->url(function (Product $record) {
+                        // return route('product.edit', $record);
+                    })
+                    ->openUrlInNewTab()
+                    ->requiresConfirmation()
+                    ->visible(function (Product $record) {
+                        return auth()->user();
+                    })
+                    ->tooltip('Edit this blog post'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+
+                Tables\Actions\BulkAction::make('deleteAll')
+                    ->action(function (Collection $record) {
+
+                        $record->each->delete();
+
+                    }),
+
+//                Tables\Actions\BulkAction::make('updateAuthor')
+//                    ->action(function (Collection $records, array $data): void {
+//                        foreach ($records as $record) {
+//                            $record->author()->associate($data['authorId']);
+//                            $record->save();
+//                        }
+//                    })
+//                    ->form([
+//                        Forms\Components\Select::make('authorId')
+//                            ->label('Author')
+//                            ->options(User::query()->pluck('name', 'id'))
+//                            ->required(),
+//                    ])
+//->modalHeading('Delete posts')
+//    ->modalSubheading('Are you sure you\'d like to delete these posts? This cannot be undone.')
+//    ->modalButton('Yes, delete them')
+
             ]);
     }
 
