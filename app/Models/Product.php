@@ -5,6 +5,7 @@ namespace App\Models;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -14,6 +15,8 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -31,6 +34,11 @@ class Product extends Model implements HasMedia
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function attributeValues(): BelongsToMany
+    {
+        return $this->belongsToMany(AttributeValue::class, 'attribute_value_product');
     }
 
     public static function getForm(): array
@@ -175,6 +183,41 @@ class Product extends Model implements HasMedia
                                 ->columnSpanFull()
                                 ->createOptionForm(Category::getForm()),
                         ]),
+
+                    Section::make('Attributes')
+                        ->columns(2)
+                        ->schema([
+                            Repeater::make('attributeValues')
+                            ->relationship('attributeValues')
+                            ->columnSpanFull()
+                                ->schema([
+
+                                    Select::make('attribute_id')
+                                        ->label('Attribute')
+                                        ->searchable()
+                                        ->preload()
+                                        ->required()
+                                        ->reactive()
+                                        ->options(Attribute::all()->pluck('name', 'id'))
+                                        ->afterStateUpdated(fn(Set $set) => $set('attribute_value_id', null))
+                                        ->columnSpanFull(),
+
+                                    Select::make('attribute_value_id')
+                                        ->label('Attribute Value')
+                                        ->options(function (callable $get) {
+                                            $attributeId = $get('attribute_id');
+                                            if ($attributeId) {
+                                                return AttributeValue::where('attribute_id', $attributeId)
+                                                    ->pluck('value', 'id');
+                                            }
+                                            return [];
+                                        })
+                                        ->required()
+                                        ->columnSpanFull(),
+                                ])
+                                ->hiddenLabel()
+                                ->createItemButtonLabel('Add Attribute'),
+                        ])
                 ])
                 ->columnSpan(['lg' => 1]),
 
