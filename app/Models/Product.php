@@ -15,7 +15,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Set;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Spatie\MediaLibrary\HasMedia;
@@ -36,9 +35,10 @@ class Product extends Model implements HasMedia
         return $this->belongsTo(Brand::class);
     }
 
-    public function attributeValues(): BelongsToMany
+    public function attributeValues(): HasMany
     {
-        return $this->belongsToMany(AttributeValue::class, 'attribute_value_product');
+        return $this->hasMany(AttributeValueProduct::class);
+
     }
 
     public static function getForm(): array
@@ -188,8 +188,8 @@ class Product extends Model implements HasMedia
                         ->columns(2)
                         ->schema([
                             Repeater::make('attributeValues')
-                            ->relationship('attributeValues')
-                            ->columnSpanFull()
+                                ->relationship('attributeValues')
+                                ->columnSpanFull()
                                 ->schema([
 
                                     Select::make('attribute_id')
@@ -198,8 +198,9 @@ class Product extends Model implements HasMedia
                                         ->preload()
                                         ->required()
                                         ->reactive()
+                                        ->dehydrated(false)
                                         ->options(Attribute::all()->pluck('name', 'id'))
-                                        ->afterStateUpdated(fn(Set $set) => $set('attribute_value_id', null))
+                                        ->afterStateUpdated(fn (Set $set) => $set('attribute_value_id', null))
                                         ->columnSpanFull(),
 
                                     Select::make('attribute_value_id')
@@ -210,14 +211,16 @@ class Product extends Model implements HasMedia
                                                 return AttributeValue::where('attribute_id', $attributeId)
                                                     ->pluck('value', 'id');
                                             }
+
                                             return [];
                                         })
                                         ->required()
                                         ->columnSpanFull(),
                                 ])
                                 ->hiddenLabel()
-                                ->createItemButtonLabel('Add Attribute'),
-                        ])
+                                ->addActionLabel('Add Attribute'),
+
+                        ]),
                 ])
                 ->columnSpan(['lg' => 1]),
 

@@ -55,7 +55,7 @@ class OrderStatsWidget extends BaseWidget
             'previousMonthOrderCount' => $previousMonth,
             'color' => $color,
             'description' => $description,
-            'descriptionIcon' => $descriptionIcon
+            'descriptionIcon' => $descriptionIcon,
         ];
     }
 }

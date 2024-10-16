@@ -2,9 +2,7 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\OrderStatusEnum;
 use App\Filament\Resources\OrderResource\Pages;
-use App\Filament\Resources\OrderResource\RelationManagers;
 use App\Filament\Resources\OrderResource\Widgets\OrderStatsWidget;
 use App\Models\Order;
 use Filament\Forms\Form;
@@ -34,7 +32,6 @@ class OrderResource extends Resource
                     ->label('Number')
                     ->searchable(),
 
-
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
                     ->searchable()
@@ -48,7 +45,7 @@ class OrderResource extends Resource
                 Tables\Columns\TextColumn::make('total_price')
                     ->label('Total Price')
                     ->money()
-                    ->prefix('$')
+                    ->prefix('$'),
 
             ])
             ->filters([
@@ -67,7 +64,7 @@ class OrderResource extends Resource
     public static function getWidgets(): array
     {
         return [
-            OrderStatsWidget::class
+            OrderStatsWidget::class,
         ];
     }
 

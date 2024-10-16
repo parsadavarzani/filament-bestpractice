@@ -65,7 +65,7 @@ class PostResource extends Resource
                     ->options(PostStatusEnum::class),
 
                 Tables\Filters\SelectFilter::make('author')
-                    ->relationship('authors', 'name')
+                    ->relationship('authors', 'name'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

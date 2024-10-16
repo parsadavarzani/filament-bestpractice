@@ -21,21 +21,21 @@ class Customer extends Model
     public static function getForm(): array
     {
         return [
-           TextInput::make('name')
+            TextInput::make('name')
                 ->required()
-               ->autocomplete(false)
+                ->autocomplete(false)
                 ->maxLength(255),
-           TextInput::make('email')
+            TextInput::make('email')
                 ->email()
                 ->required()
-               ->autocomplete(false)
+                ->autocomplete(false)
                 ->maxLength(255),
-           TextInput::make('phone')
+            TextInput::make('phone')
                 ->tel()
-               ->autocomplete(false)
+                ->autocomplete(false)
                 ->maxLength(255),
 
-           DatePicker::make('birthday')
+            DatePicker::make('birthday')
                 ->date(),
 
             FileUpload::make('photo')

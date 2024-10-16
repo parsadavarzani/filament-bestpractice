@@ -10,7 +10,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
-use Filament\Tables\Filters\QueryBuilder\Constraints\NumberConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint;
 use Filament\Tables\Filters\QueryBuilder\Constraints\RelationshipConstraint\Operators\IsRelatedToOperator;
 use Filament\Tables\Table;
@@ -30,7 +29,7 @@ class ProductResource extends Resource
         return Product::count();
     }
 
-    public static function getNavigationBadgeColor(): string|array|null
+    public static function getNavigationBadgeColor(): string | array | null
     {
         return 'danger';
     }
@@ -75,11 +74,11 @@ class ProductResource extends Resource
                     ->sortable(),
             ])
             ->filters([
-//                Tables\Filters\Filter::make('is_visible')
-//                    ->label('Visibility')
-//                    ->query(function (Builder $query) {
-//                        return $query->where('is_visible', 1);
-//                    }),
+                //                Tables\Filters\Filter::make('is_visible')
+                //                    ->label('Visibility')
+                //                    ->query(function (Builder $query) {
+                //                        return $query->where('is_visible', 1);
+                //                    }),
                 Tables\Filters\Filter::make('is_visible')
                     ->label('Visibility')
                     ->toggle()
@@ -93,11 +92,11 @@ class ProductResource extends Resource
                     ->placeholder('You can see with products are visible and witch are not')
                     ->trueLabel('do you want to see visible products ?')
                     ->falseLabel('do you want to see invisible products ?'),
-//                    ->queries(
-//                        true: fn (Builder $query) => $query->withTrashed(),
-//                        false: fn (Builder $query) => $query->onlyTrashed(),
-//                        blank: fn (Builder $query) => $query->withoutTrashed(),
-//                    )
+                //                    ->queries(
+                //                        true: fn (Builder $query) => $query->withTrashed(),
+                //                        false: fn (Builder $query) => $query->onlyTrashed(),
+                //                        blank: fn (Builder $query) => $query->withoutTrashed(),
+                //                    )
 
                 Tables\Filters\Filter::make('created_at')
                     ->form([
@@ -108,36 +107,36 @@ class ProductResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'],
-                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                                fn (Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
                             );
                     }),
 
-//                Tables\Filters\QueryBuilder::make()
-//                    ->constraints([
-//                        Tables\Filters\QueryBuilder\Constraints\TextConstraint::make('name'),
-//                        Tables\Filters\QueryBuilder\Constraints\BooleanConstraint::make('is_visible'),
-//                        DateConstraint::make('created_at'),
-//                        RelationshipConstraint::make('categories')
-//                            ->multiple()
-//                            ->selectable(
-//                                IsRelatedToOperator::make()
-//                                    ->titleAttribute('name')
-//                                    ->searchable()
-//                                    ->multiple(),
-//                            ),
-//                    ])
+                //                Tables\Filters\QueryBuilder::make()
+                //                    ->constraints([
+                //                        Tables\Filters\QueryBuilder\Constraints\TextConstraint::make('name'),
+                //                        Tables\Filters\QueryBuilder\Constraints\BooleanConstraint::make('is_visible'),
+                //                        DateConstraint::make('created_at'),
+                //                        RelationshipConstraint::make('categories')
+                //                            ->multiple()
+                //                            ->selectable(
+                //                                IsRelatedToOperator::make()
+                //                                    ->titleAttribute('name')
+                //                                    ->searchable()
+                //                                    ->multiple(),
+                //                            ),
+                //                    ])
             ])
             ->actions([
                 Tables\Actions\EditAction::make()->color('info'),
 
-//                Tables\Actions\ReplicateAction::make()->excludeAttributes(['slug'])
-//                    ->beforeReplicaSaved(function (Model $replica, array $data): void {
-//                        $replica->fill($data);
-//                    }),
+                //                Tables\Actions\ReplicateAction::make()->excludeAttributes(['slug'])
+                //                    ->beforeReplicaSaved(function (Model $replica, array $data): void {
+                //                        $replica->fill($data);
+                //                    }),
 
                 Tables\Actions\Action::make('visibility')
                     ->label('Visibility')
@@ -164,22 +163,22 @@ class ProductResource extends Resource
 
                     }),
 
-//                Tables\Actions\BulkAction::make('updateAuthor')
-//                    ->action(function (Collection $records, array $data): void {
-//                        foreach ($records as $record) {
-//                            $record->author()->associate($data['authorId']);
-//                            $record->save();
-//                        }
-//                    })
-//                    ->form([
-//                        Forms\Components\Select::make('authorId')
-//                            ->label('Author')
-//                            ->options(User::query()->pluck('name', 'id'))
-//                            ->required(),
-//                    ])
-//->modalHeading('Delete posts')
-//    ->modalSubheading('Are you sure you\'d like to delete these posts? This cannot be undone.')
-//    ->modalButton('Yes, delete them')
+                //                Tables\Actions\BulkAction::make('updateAuthor')
+                //                    ->action(function (Collection $records, array $data): void {
+                //                        foreach ($records as $record) {
+                //                            $record->author()->associate($data['authorId']);
+                //                            $record->save();
+                //                        }
+                //                    })
+                //                    ->form([
+                //                        Forms\Components\Select::make('authorId')
+                //                            ->label('Author')
+                //                            ->options(User::query()->pluck('name', 'id'))
+                //                            ->required(),
+                //                    ])
+                //->modalHeading('Delete posts')
+                //    ->modalSubheading('Are you sure you\'d like to delete these posts? This cannot be undone.')
+                //    ->modalButton('Yes, delete them')
 
             ]);
     }

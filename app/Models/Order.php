@@ -69,7 +69,7 @@ class Order extends Model
                                     ->options(Product::query()->pluck('name', 'id'))
                                     ->required()
                                     ->reactive()
-                                    ->afterStateUpdated(fn($state, Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
+                                    ->afterStateUpdated(fn ($state, Set $set) => $set('unit_price', Product::find($state)?->price ?? 0))
                                     ->distinct()
                                     ->disableOptionsWhenSelectedInSiblingRepeaterItems()
                                     ->columnSpan([
@@ -105,13 +105,13 @@ class Order extends Model
 
                                         $product = Product::find($itemData['product_id']);
 
-                                        if (!$product) {
+                                        if (! $product) {
                                             return null;
                                         }
 
                                         return ProductResource::getUrl('edit', ['record' => $product]);
                                     }, shouldOpenInNewTab: true)
-                                    ->hidden(fn(array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
+                                    ->hidden(fn (array $arguments, Repeater $component): bool => blank($component->getRawItemState($arguments['item'])['product_id'])),
                             ])
                             ->orderColumn('sort')
                             ->defaultItems(1)
@@ -119,10 +119,10 @@ class Order extends Model
                             ->columns([
                                 'md' => 10,
                             ])
-                            ->required()
+                            ->required(),
                     ]),
 
-            ])
+            ]),
         ];
     }
 }

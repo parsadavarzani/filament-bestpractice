@@ -9,10 +9,9 @@ use Filament\Widgets\TableWidget as BaseWidget;
 
 class LastProducts extends BaseWidget
 {
-
     protected static ?int $sort = 3;
 
-    protected int|string|array $columnSpan = 'full';
+    protected int | string | array $columnSpan = 'full';
 
     public function table(Table $table): Table
     {
@@ -26,7 +25,7 @@ class LastProducts extends BaseWidget
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->searchable()
-                    ->sortable()
+                    ->sortable(),
             ]);
     }
 }

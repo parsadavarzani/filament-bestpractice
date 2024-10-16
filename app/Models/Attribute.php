@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,7 +44,6 @@ class Attribute extends Model
                         ->label('Attribute Values')
                         ->createItemButtonLabel('Add Value'),
                 ]),
-
 
         ];
 
